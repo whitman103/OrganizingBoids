@@ -8,7 +8,7 @@ utils.o: utils.hpp utils.cpp
 agent.o: agent.cpp agent.hpp
 	clang++ -std=c++17 -c -O3 agent.cpp -o agent.o
 
-grid.o: grid.cpp agent.o
+grid.o: grid.cpp agent.o grid.hpp
 	clang++ -std=c++17 -c -O3 grid.cpp -o grid.o
 
 pyBoids: pyBoids.cpp utils.o agent.o grid.o

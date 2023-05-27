@@ -5,6 +5,14 @@
 #include "agent.hpp"
 #include "grid.hpp"
 
+void resetArray(sf::Uint8 *pixelArray, const int xSize, const int ySize)
+{
+    for (int index{0}; index < xSize * ySize * 4; index++)
+    {
+        pixelArray[index] = 0;
+    }
+}
+
 void calculateImage(sf::Uint8 *pixelArray, GlobalGrid &globalState)
 {
     auto [xSize, ySize] = globalState.globalSizes;
@@ -45,13 +53,15 @@ int main()
     std::default_random_engine generator;
     std::uniform_real_distribution<double> dist(0.0, 1.0);
 
-    const int NBoids(2000);
+    const int NBoids(20);
     for (int boidIndex{0}; boidIndex < NBoids; boidIndex++)
     {
         valarray<double> position = {dist(generator) * xSize, dist(generator) * ySize};
         valarray<double> velocity = {dist(generator) * 1, dist(generator) * 2};
         globalState.add_agent(position, velocity);
     }
+
+    sf::Uint8 *pixelArray = new sf::Uint8[xSize * ySize * colorWidth];
 
     while (window.isOpen())
     {
@@ -60,19 +70,19 @@ int main()
         {
             if (event.type == sf::Event::Closed)
                 window.close();
-            else if (event.type == sf::Event::KeyPressed)
-                wait = false;
         }
         if (!wait)
         {
-            window.clear();
-            sf::Uint8 *pixelArray = new sf::Uint8[xSize * ySize * colorWidth];
-            calculateImage(pixelArray, globalState);
-            texture.update(pixelArray);
-            window.draw(sprite);
-            window.display();
-            wait = true;
-            free(pixelArray);
+            if (clock.getElapsedTime().asSeconds() > 2)
+            {
+                window.clear();
+                resetArray(pixelArray, xSize, ySize);
+                calculateImage(pixelArray, globalState);
+                texture.update(pixelArray);
+                window.draw(sprite);
+                window.display();
+                clock.restart();
+            }
         }
     }
 

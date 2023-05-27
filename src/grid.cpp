@@ -31,12 +31,38 @@ void GlobalGrid::run_simulation_step()
         regionKey.second.run_simulation_step();
     }
     this->apply_boundary_conditions();
+    for (auto &regionKey : this->regionList)
+    {
+        vector<int> toErase(0);
+        for (int agentIndex{0}; agentIndex < (int)regionKey.second.agentList.size(); agentIndex++)
+        {
+            if (this->get_region_label(regionKey.second.agentList[agentIndex]->position) != regionKey.first)
+            {
+                this->regionList.at(this->get_region_label(regionKey.second.agentList[agentIndex]->position))
+                    .agentList.push_back(std::move(regionKey.second.agentList[agentIndex]));
+                toErase.push_back(agentIndex);
+            }
+        }
+        int numErase(0);
+        for (auto &eraseIndex : toErase)
+        {
+            regionKey.second.agentList.erase(regionKey.second.agentList.begin() + eraseIndex - numErase);
+            numErase += 1;
+        }
+    }
 };
 
 const int GlobalGrid::get_region_label(std::pair<double, double> position)
 {
     const int xPos(floor(get<0>(position)) / divisionSize);
     const int yPos(floor(get<1>(position)) / divisionSize);
+    return xPos + get<1>(globalSizes) / divisionSize * yPos;
+}
+
+const int GlobalGrid::get_region_label(valarray<double> position)
+{
+    const int xPos(floor(position[0]) / divisionSize);
+    const int yPos(floor(position[1]) / divisionSize);
     return xPos + get<1>(globalSizes) / divisionSize * yPos;
 }
 

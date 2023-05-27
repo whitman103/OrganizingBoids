@@ -82,7 +82,8 @@ struct GlobalGrid
 
     void run_simulation_step();
     void add_agent(valarray<double> init_pos, valarray<double> init_velo);
-    const int get_region_label(std::pair<double, double> position);
+    const int get_region_label(const std::pair<double, double> position);
+    const int get_region_label(const valarray<double> position);
 };
 
 #endif
