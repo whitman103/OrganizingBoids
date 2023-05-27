@@ -7,5 +7,6 @@ using std::valarray;
 
 double get_distance(valarray<double> position1, valarray<double> position2);
 
+double get_norm(valarray<double> inArray);
 
 #endif

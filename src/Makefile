@@ -8,8 +8,11 @@ utils.o: utils.hpp utils.cpp
 agent.o: agent.cpp agent.hpp
 	clang++ -std=c++17 -c -O3 agent.cpp -o agent.o
 
-pyBoids: pyBoids.cpp utils.o agent.o
-	clang++ -std=c++17 $(SFMLOptions) pyBoids.cpp agent.o utils.o -o pyBoids
+grid.o: grid.cpp agent.o
+	clang++ -std=c++17 -c -O3 grid.cpp -o grid.o
+
+pyBoids: pyBoids.cpp utils.o agent.o grid.o
+	clang++ -std=c++17 -O3 $(SFMLOptions) pyBoids.cpp agent.o utils.o grid.o -o pyBoids
 
 clean:
-	rm agent.o utils.o pyBoids
+	rm agent.o utils.o pyBoids grid.o
