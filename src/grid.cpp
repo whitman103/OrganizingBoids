@@ -54,15 +54,15 @@ void GlobalGrid::run_simulation_step()
 
 const int GlobalGrid::get_region_label(std::pair<double, double> position)
 {
-    const int xPos(floor(get<0>(position)) / divisionSize);
-    const int yPos(floor(get<1>(position)) / divisionSize);
+    const int xPos((int)floor(get<0>(position)) / divisionSize);
+    const int yPos((int)floor(get<1>(position)) / divisionSize);
     return xPos + get<1>(globalSizes) / divisionSize * yPos;
 }
 
 const int GlobalGrid::get_region_label(valarray<double> position)
 {
-    const int xPos(floor(position[0]) / divisionSize);
-    const int yPos(floor(position[1]) / divisionSize);
+    const int xPos((int)floor(position[0]) / divisionSize);
+    const int yPos((int)floor(position[1]) / divisionSize);
     return xPos + get<1>(globalSizes) / divisionSize * yPos;
 }
 
@@ -111,5 +111,9 @@ void Region::run_simulation_step()
     for (auto &agent : this->agentList)
     {
         agent->update_pos(this->agentList);
+    }
+    for (auto &agent : this->agentList)
+    {
+        agent->position += agent->velocity * 0.2;
     }
 }

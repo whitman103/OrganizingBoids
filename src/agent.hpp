@@ -32,7 +32,7 @@ struct Boid : public Agent
     Boid(valarray<double> pos, valarray<double> vel) : Agent(pos, vel){};
 
     double align_sense_distance = boid_align_sense_distance_default;
-    double align_match_distance = boid_align_match_distance_default;
+    double align_match_distance = boid_align_match_factor_default;
     double sep_sense_distance = boid_sep_sense_distance_default;
     double sense_match_factor = boid_sense_match_factor_default;
     double cohese_sense_distance = boid_cohese_sense_distance_default;

@@ -34,7 +34,15 @@ The executable is called `pyBoids` anticipating a `pybind` of the project.
 
 ## Status
 - Initialization and creation of window: ***Finished***
-- Implementation of animation: ***Pending***
+- Implementation of animation: ***Finished***
+<p align="center">
+  <a href="https://example.com/">
+    <img src="media/2000Boids_300FPS_SingleCore.png" alt="Logo" width=300 height=250>
+  </a>
+
+  <h3 align="center">Roughly 300 FPS for 2000 Boids on a single core, no GPU.</h3>
+</p>
+
 - Implementation of predators: ***Pending***
 - Implementation of reproduction/natural selection/genetic algorithm: ***Pending***
 

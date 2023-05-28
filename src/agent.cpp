@@ -12,7 +12,6 @@ void Agent::update_pos(const AgentList &nearbyAgents)
 void Boid::update_pos(const AgentList &nearbyAgents)
 {
     this->standard_update_pos(nearbyAgents);
-    this->position += this->velocity;
 };
 
 void Boid::sense_alignment(const AgentList &nearbyAgents)
@@ -63,17 +62,17 @@ void Boid::standard_update_pos(const AgentList &nearbyAgents)
     valarray<double> alignment_average_velocity(0., NDIM);
     valarray<double> cohese_group_position(0., NDIM);
     valarray<double> sep_close(0., NDIM);
-    int cohese_neighboring_boids(0);
-    int align_close_boids(0);
+    int neighboring_boids(0);
     for (auto &other_boid : nearbyAgents)
     {
         const double interboid_distance(get_distance(this->position, other_boid->position));
-        // Cohesion step
+        // Cohesion step and alignment step
 
         if (interboid_distance < this->align_sense_distance)
         {
             cohese_group_position += other_boid->position;
-            cohese_neighboring_boids++;
+            neighboring_boids++;
+            alignment_average_velocity += other_boid->velocity;
         };
 
         // Separation step
@@ -81,35 +80,45 @@ void Boid::standard_update_pos(const AgentList &nearbyAgents)
         {
             sep_close += (this->position - other_boid->position);
         };
-
-        // Alignment step
-        if (interboid_distance < this->align_sense_distance)
-        {
-            alignment_average_velocity += other_boid->position;
-            align_close_boids++;
-        }
     }
 
     valarray<double> delta_velocity(0., NDIM);
 
     // Alignment update
-    alignment_average_velocity /= align_close_boids;
+    alignment_average_velocity /= neighboring_boids;
     delta_velocity += (alignment_average_velocity - this->velocity) * this->align_match_distance;
 
     // Separation update
     delta_velocity += (sep_close * this->sense_match_factor);
 
     // Cohesion update
-    cohese_group_position /= cohese_neighboring_boids;
+    cohese_group_position /= neighboring_boids;
     delta_velocity += (cohese_group_position - this->position) * this->cohese_match_factor;
     this->velocity += delta_velocity;
 
+    if (this->position[0] < avoid_margin_size)
+    {
+        this->velocity[0] += margin_turn_factor;
+    }
+    if (this->position[0] > (windowXSize - avoid_margin_size))
+    {
+        this->velocity[0] -= margin_turn_factor;
+    }
+    if (this->position[1] < avoid_margin_size)
+    {
+        this->velocity[1] += margin_turn_factor;
+    }
+    if (this->position[1] > (windowYSize - avoid_margin_size))
+    {
+        this->velocity[1] -= margin_turn_factor;
+    }
+
     if (get_norm(this->velocity) > max_speed)
     {
-        this->velocity /= get_norm(this->velocity) / max_speed;
+        this->velocity = this->velocity / get_norm(this->velocity) * max_speed;
     };
     if (get_norm(this->velocity) < min_speed)
     {
-        this->velocity /= get_norm(this->velocity) / min_speed;
+        this->velocity = this->velocity / get_norm(this->velocity) * min_speed;
     }
 }

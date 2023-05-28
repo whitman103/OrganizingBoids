@@ -47,11 +47,12 @@ struct Region
                          (get<1>(xBounds) == get<0>(sizes)) * BoundaryTypes::UpperX +
                          (get<0>(yBounds) == 0) * BoundaryTypes::LowerY +
                          (get<1>(yBounds) == get<1>(sizes)) * BoundaryTypes::UpperY;
-        this->agentList.resize(0);
-    }
+    };
     void run_simulation_step();
 
-    Region(Region &&other) : agentList(std::move(other.agentList)){};
+    Region(Region &&other)
+        : agentList(std::move(other.agentList)), boundary(std::move(other.boundary)), xBounds(std::move(other.xBounds)),
+          yBounds(std::move(other.yBounds)){};
 };
 
 struct GlobalGrid
@@ -72,6 +73,7 @@ struct GlobalGrid
         {
             for (int curY{0}; curY < get<1>(globalSizes); curY += divisionSize)
             {
+
                 this->regionList.insert(make_tuple(
                     this->get_region_label(make_tuple(curX, curY)),
                     Region(make_tuple(curX, curX + divisionSize), make_tuple(curY, curY + divisionSize), globalSizes)));
