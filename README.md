@@ -37,7 +37,7 @@ The executable is called `pyBoids` anticipating a `pybind` of the project.
 - Implementation of animation: ***Finished***
 <p align="center">
   <a href="https://example.com/">
-    <img src="media/2000Boids_300FPS_SingleCore.png" alt="Logo" width=300 height=250>
+    <img src="media/2000Boids_300FPS_SingleCore.png" alt="Logo" width=500 height=400>
   </a>
 
   <h3 align="center">Roughly 300 FPS for 2000 Boids on a single core, no GPU.</h3>
