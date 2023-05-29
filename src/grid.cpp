@@ -36,10 +36,10 @@ void GlobalGrid::run_simulation_step()
         vector<int> toErase(0);
         for (int agentIndex{0}; agentIndex < (int)regionKey.second.agentList.size(); agentIndex++)
         {
-            if (this->get_region_label(regionKey.second.agentList[agentIndex]->position) != regionKey.first)
+            if (this->get_region_label(regionKey.second.agentList.at(agentIndex)->position) != regionKey.first)
             {
-                this->regionList.at(this->get_region_label(regionKey.second.agentList[agentIndex]->position))
-                    .agentList.push_back(std::move(regionKey.second.agentList[agentIndex]));
+                this->regionList.at(this->get_region_label(regionKey.second.agentList.at(agentIndex)->position))
+                    .agentList.push_back(std::move(regionKey.second.agentList.at(agentIndex)));
                 toErase.push_back(agentIndex);
             }
         }

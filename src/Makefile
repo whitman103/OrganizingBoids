@@ -1,6 +1,8 @@
 default: pyBoids
 
-CompilerOptions = -L/opt/homebrew/opt/libomp/lib/ -I/opt/homebrew/opt/libomp/include -lomp
+# Keeping the libomp flags around in case I want to implement it.
+#CompilerOptions = -L/opt/homebrew/opt/libomp/lib/ -I/opt/homebrew/opt/libomp/include -lomp
+CompilerOptions = 
 
 SFMLOptions = -I/opt/homebrew/Cellar/sfml/2.5.1_2/include/ -L/opt/homebrew/Cellar/sfml/2.5.1_2/lib -lsfml-graphics -lsfml-window -lsfml-system
 
